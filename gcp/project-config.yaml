@@ -1,0 +1,38 @@
+# GCP Project Configuration for MarketPulse
+project:
+  id: "marketpulse-app" # You'll need to change this to your actual project ID
+  region: "us-central1"
+  zone: "us-central1-a"
+
+# Required GCP APIs to enable
+apis:
+  - container.googleapis.com
+  - sqladmin.googleapis.com
+  - redis.googleapis.com
+  - secretmanager.googleapis.com
+  - cloudbuild.googleapis.com
+  - artifactregistry.googleapis.com
+
+# GKE Cluster Configuration
+cluster:
+  name: "marketpulse-cluster"
+  node_count: 3
+  machine_type: "e2-standard-2"
+  disk_size: "20"
+  
+# Database Configuration
+databases:
+  postgres_users:
+    instance_name: "marketpulse-users-db"
+    database_name: "marketpulse_users"
+    tier: "db-f1-micro"
+    
+  postgres_articles:
+    instance_name: "marketpulse-articles-db" 
+    database_name: "marketpulse_articles"
+    tier: "db-f1-micro"
+    
+  redis:
+    instance_name: "marketpulse-redis"
+    tier: "BASIC"
+    memory_size: 1

@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: marketpulse-ingress
+  namespace: marketpulse
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "marketpulse-ip"
+    networking.gke.io/managed-certificates: "marketpulse-ssl-cert"
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  rules:
+  - host: DOMAIN_NAME  # Replace with your domain
+    http:
+      paths:
+      - path: /api/user/*
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 8080
+      - path: /api/article/*
+        pathType: Prefix
+        backend:
+          service:
+            name: article-service
+            port:
+              number: 8080
+      - path: /api/analysis/*
+        pathType: Prefix
+        backend:
+          service:
+            name: analysis-service
+            port:
+              number: 5001
+      - path: /*
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: marketpulse-ssl-cert
+  namespace: marketpulse
+spec:
+  domains:
+    - DOMAIN_NAME  # Replace with your domain

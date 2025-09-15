@@ -1,0 +1,40 @@
+{
+  "name": "market-pulse",
+  "version": "1.0.0",
+  "description": "Market Pulse - Real-time market sentiment analysis and trading platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server.js",
+    "backend:up": "docker-compose up -d",
+    "backend:down": "docker-compose down",
+    "backend:logs": "docker-compose logs -f"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.0",
+    "lucide-react": "^0.263.1",
+    "recharts": "^2.7.2",
+    "framer-motion": "^10.16.4",
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "axios": "^1.6.0",
+    "lightweight-charts": "^4.1.0",
+    "zustand": "^4.4.0",
+    "react-grid-layout": "^1.4.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "vite": "^4.4.5",
+    "@types/react-grid-layout": "^1.3.4"
+  },
+  "keywords": ["trading", "finance", "charts", "react", "market-pulse", "sentiment-analysis"],
+  "author": "Market Pulse",
+  "license": "MIT"
+}

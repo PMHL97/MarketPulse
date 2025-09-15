@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: User Service API
+  version: 1.0.0
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      responses:
+        '200':
+          description: User registered
+  /api/auth/login:
+    post:
+      summary: Login user
+      responses:
+        '200':
+          description: User logged in
+  /api/watchlist:
+    get:
+      summary: Get user watchlist
+      responses:
+        '200':
+          description: Watchlist returned
+    post:
+      summary: Add ticker to watchlist
+      responses:
+        '200':
+          description: Ticker added
+  /api/watchlist/{ticker}:
+    delete:
+      summary: Remove ticker from watchlist
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ticker removed
