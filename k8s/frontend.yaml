@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/PROJECT_ID/frontend:latest
+        image: marketpulse/frontend:latest
         ports:
         - containerPort: 3000
         env:
@@ -64,3 +64,4 @@ spec:
     targetPort: 3000
     protocol: TCP
   type: ClusterIP
+

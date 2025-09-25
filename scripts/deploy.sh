@@ -1,17 +1,11 @@
 #!/bin/bash
 
 # MarketPulse Deployment Script
-# Deploys all services to GKE
+# Deploys all services to local Kubernetes cluster
 
 set -e
 
-PROJECT_ID=${1:-"marketpulse-app"}
-REGION="us-central1"
-
-echo "🚀 Deploying MarketPulse to GKE..."
-
-# Ensure we're connected to the right cluster
-gcloud container clusters get-credentials marketpulse-cluster --region=$REGION --project=$PROJECT_ID
+echo "🚀 Deploying MarketPulse to local Kubernetes..."
 
 # Apply all Kubernetes manifests in order
 echo "📋 Applying Kubernetes manifests..."
@@ -48,20 +42,14 @@ kubectl get services -n marketpulse
 echo ""
 kubectl get ingress -n marketpulse
 
-# Get the external IP
-EXTERNAL_IP=$(kubectl get ingress marketpulse-ingress -n marketpulse -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "Pending...")
-
 echo ""
 echo "🌍 Application Status:"
-echo "- External IP: $EXTERNAL_IP"
-echo "- If IP shows 'Pending', wait a few minutes for the load balancer to be provisioned"
-echo ""
-echo "📝 Next steps:"
-echo "1. Point your domain to the external IP: $EXTERNAL_IP"
-echo "2. Wait for SSL certificate to be provisioned (can take 10-15 minutes)"
-echo "3. Access your app at: https://your-domain.com"
+echo "- Services are running in the marketpulse namespace"
+echo "- Use port-forwarding to access services locally"
 echo ""
 echo "🔧 Useful commands:"
 echo "- Check pods: kubectl get pods -n marketpulse"
 echo "- View logs: kubectl logs -f deployment/SERVICE_NAME -n marketpulse"
-echo "- Check ingress: kubectl describe ingress marketpulse-ingress -n marketpulse"
+echo "- Port forward: kubectl port-forward service/SERVICE_NAME PORT:PORT -n marketpulse"
+echo "- Access frontend: kubectl port-forward service/frontend 3000:80 -n marketpulse"
+

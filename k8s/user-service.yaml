@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: gcr.io/PROJECT_ID/user-service:latest
+        image: marketpulse/user-service:latest
         ports:
         - containerPort: 8080
         env:
@@ -78,3 +78,4 @@ spec:
     targetPort: 8080
     protocol: TCP
   type: ClusterIP
+

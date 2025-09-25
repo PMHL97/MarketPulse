@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: analysis-service
-        image: gcr.io/PROJECT_ID/analysis-service:latest
+        image: marketpulse/analysis-service:latest
         ports:
         - containerPort: 5001
         env:
@@ -70,3 +70,4 @@ spec:
     targetPort: 5001
     protocol: TCP
   type: ClusterIP
+

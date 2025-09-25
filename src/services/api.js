@@ -1,9 +1,12 @@
 import axios from 'axios';
 
-// API base URLs
-const USER_SERVICE_URL = 'http://localhost:8082';
-const ARTICLE_SERVICE_URL = 'http://localhost:8083';
-const ANALYSIS_SERVICE_URL = 'http://localhost:5002';
+// API base URLs - Environment-aware configuration
+const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+const baseUrl = isProduction ? 'http://3.144.189.176' : 'http://localhost';
+
+const USER_SERVICE_URL = isProduction ? `${baseUrl}:8080` : `${baseUrl}:8082`;
+const ARTICLE_SERVICE_URL = isProduction ? `${baseUrl}:8081` : `${baseUrl}:8083`;
+const ANALYSIS_SERVICE_URL = isProduction ? `${baseUrl}:5001` : `${baseUrl}:5002`;
 
 // Create axios instances for each service
 const userApi = axios.create({

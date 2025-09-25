@@ -102,7 +102,7 @@ const FeaturedIdeas = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {ideas.map((idea) => (
-        <div key={idea.id} className="bg-white rounded-xl shadow-sm border border-secondary-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div key={idea.id} className="rounded-[24px] bg-[#e9ecdf] border border-secondary-200 p-6 hover:shadow-soft transition-shadow duration-200">
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-2">
@@ -118,23 +118,23 @@ const FeaturedIdeas = () => {
           </div>
 
           {/* Symbol */}
-          <div className="text-sm font-mono text-primary-600 mb-3">
+          <div className="text-sm font-mono text-[#0a3b4a] mb-3">
             {idea.symbol}
           </div>
 
           {/* Title */}
-          <h3 className="text-lg font-semibold text-secondary-900 mb-3 line-clamp-2 hover:text-primary-600 transition-colors cursor-pointer">
+          <h3 className="text-lg font-semibold text-[#0a3b4a] mb-3 line-clamp-2 hover:opacity-80 transition-colors cursor-pointer">
             {idea.title}
           </h3>
 
           {/* Excerpt */}
-          <p className="text-secondary-600 text-sm mb-4 line-clamp-3">
+          <p className="text-secondary-700 text-sm mb-4 line-clamp-3">
             {idea.excerpt}
           </p>
 
           {/* Author */}
-          <div className="text-sm text-secondary-500 mb-4">
-            by <span className="font-medium text-secondary-700">{idea.author}</span>
+          <div className="text-sm text-secondary-700 mb-4">
+            by <span className="font-medium text-[#0a3b4a]">{idea.author}</span>
           </div>
 
           {/* Stats */}

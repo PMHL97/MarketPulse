@@ -28,6 +28,10 @@ import ContactPage from './pages/ContactPage'
 import CareersPage from './pages/CareersPage'
 import BusinessPartnersPage from './pages/BusinessPartnersPage'
 import BusinessAdvertisingPage from './pages/BusinessAdvertisingPage'
+import ProfilePage from './pages/ProfilePage'
+import PreferencesPage from './pages/PreferencesPage'
+import NotificationsPage from './pages/NotificationsPage'
+import IconPreview from './pages/IconPreview'
 import useAuthStore from './store/authStore'
 import './App.css'
 
@@ -71,6 +75,10 @@ function App() {
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/business/partners" element={<BusinessPartnersPage />} />
             <Route path="/business/advertising" element={<BusinessAdvertisingPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/preferences" element={<PreferencesPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/icon-preview" element={<IconPreview />} />
           </Routes>
         </main>
         <Footer />

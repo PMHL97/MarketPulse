@@ -49,20 +49,20 @@ const MarketSummary = () => {
   }
 
   const MarketCard = ({ title, data, className = '' }) => (
-    <div className={`bg-white rounded-xl shadow-sm border border-secondary-200 p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-secondary-900 mb-4">{title}</h3>
+    <div className={`rounded-[24px] bg-[#e9ecdf] border border-secondary-200 p-6 ${className}`}>
+      <h3 className="text-lg font-semibold text-[#0a3b4a] mb-4">{title}</h3>
       <div className="space-y-3">
         {data.map((item, index) => (
-          <div key={index} className="flex items-center justify-between py-2 border-b border-secondary-100 last:border-b-0">
+          <div key={index} className="flex items-center justify-between py-2 border-b border-secondary-200/60 last:border-b-0">
             <div className="flex items-center space-x-3">
               {getTrendIcon(item.trend)}
               <div>
-                <div className="font-medium text-secondary-900">{item.name}</div>
-                <div className="text-sm text-secondary-500">{item.symbol}</div>
+                <div className="font-medium text-[#0a3b4a]">{item.name}</div>
+                <div className="text-sm text-secondary-700">{item.symbol}</div>
               </div>
             </div>
             <div className="text-right">
-              <div className="font-semibold text-secondary-900">{item.price}</div>
+              <div className="font-semibold text-[#0a3b4a]">{item.price}</div>
               <div className={`text-sm font-medium ${getChangeColor(item.trend)}`}>
                 {item.change}
               </div>

@@ -17,6 +17,7 @@ import {
   TrendingDown,
   Star
 } from 'lucide-react'
+import TraceIcon from './TraceIcon'
 import AuthModal from './AuthModal'
 import useAuthStore from '../store/authStore'
 import { marketDataService } from '../services/api'
@@ -370,10 +371,8 @@ const Header = () => {
             {/* Logo */}
             <div className="flex items-center">
               <Link to="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-gradient">Market Pulse</span>
+                <TraceIcon className="w-6 h-6" />
+                <span className="text-xl font-extrabold text-secondary-900">Market Pulse</span>
               </Link>
             </div>
 
@@ -408,8 +407,8 @@ const Header = () => {
                           }}
                           className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                             isActive(item.href)
-                              ? 'text-primary-600 bg-primary-50'
-                              : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
+                              ? 'text-primary-700 bg-primary-100'
+                              : 'text-secondary-700 hover:text-secondary-900 hover:bg-primary-100'
                           }`}
                         >
                           <Icon className="w-4 h-4" />
@@ -890,7 +889,7 @@ const Header = () => {
                       onClick={() => handleAuthClick('login')}
                       className="btn-primary text-sm"
                     >
-                      Sign In
+                      Log In
                     </button>
                     <button 
                       onClick={() => handleAuthClick('register')}
@@ -945,7 +944,7 @@ const Header = () => {
                       }}
                       className="w-full btn-primary text-sm"
                     >
-                      Sign In
+                      Log In
                     </button>
                     <button 
                       onClick={() => {

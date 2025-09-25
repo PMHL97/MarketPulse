@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { 
   TrendingUp, 
   TrendingDown, 
-  Play, 
   ArrowRight,
   BarChart3,
   Users,
@@ -18,72 +17,96 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-secondary-900 via-secondary-800 to-secondary-900 text-white py-20">
+      <section className="bg-[#f0f4e8] text-secondary-900 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              The best trades require research, then commitment.
-            </h1>
-            <p className="text-xl md:text-2xl text-secondary-200 mb-8">
-              Join 100 million traders and investors taking the future into their own hands.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link to="/charts" className="btn-primary text-lg px-8 py-4 flex items-center space-x-2">
-                <span>Get started for free</span>
-                <span className="text-sm opacity-75">$0 forever, no credit card needed</span>
-              </Link>
-              <button className="btn-secondary text-lg px-8 py-4 flex items-center space-x-2">
-                <Play className="w-5 h-5" />
-                <span>Watch explainer</span>
-              </button>
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            {/* Text Content */}
+            <div className="flex-1 text-left">
+              <div className="text-sm font-semibold tracking-wider uppercase text-secondary-700 mb-2">BRINGING IDEAS TO LIFE</div>
+              <div className="w-16 h-0.5 bg-secondary-300 mb-6"></div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-secondary-900 mb-6 leading-tight">
+                The best trades require research, then commitment.
+              </h1>
+              <p className="text-lg text-secondary-600 mb-8">
+                Join 100 million traders and investors taking the future into their own hands.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/charts" className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-base flex items-center space-x-2">
+                  <span>Get started for free</span>
+                  <span className="text-xs opacity-80">$0 forever, no credit card needed</span>
+                </Link>
+              </div>
+            </div>
+            
+            {/* Hero Journey Illustration */}
+            <div className="flex-1 flex justify-center">
+              <img 
+                src="/hero-journey__a399cc7ef240acbb66eef71f67caac19d2c9fa9f4b760ae4667e546d314060a8.svg" 
+                alt="Trading journey illustration" 
+                className="w-full max-w-lg h-auto"
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Removed Key Metrics section per request */}
+
+      {/* What we do */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
-              Where the world does markets
+            <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
+              WHAT WE DO
             </h2>
-            <p className="text-xl text-secondary-600 max-w-2xl mx-auto">
-              Advanced charting, real-time data, and a global community of traders
+            <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
+              Curious about trading? Learn the ins and outs from the pros before making your move.
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BarChart3 className="w-8 h-8 text-primary-600" />
+            {/* Supercharts Card */}
+            <div className="bg-[#d4c4a8] rounded-2xl p-8 text-center">
+              <h3 className="text-xl font-bold text-secondary-900 mb-4">Supercharts</h3>
+              <p className="text-secondary-600 mb-6">
+                Professional-grade charting with 100+ indicators
+              </p>
+              <div className="flex justify-center">
+                <BarChart3 className="w-12 h-12 text-secondary-700" />
               </div>
-              <h3 className="text-xl font-semibold text-secondary-900 mb-2">Supercharts</h3>
-              <p className="text-secondary-600">Professional-grade charting with 100+ indicators</p>
             </div>
             
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Globe className="w-8 h-8 text-primary-600" />
+            {/* Global Markets Card */}
+            <div className="bg-[#d4a853] rounded-2xl p-8 text-center">
+              <h3 className="text-xl font-bold text-secondary-900 mb-4">Global Markets</h3>
+              <p className="text-secondary-600 mb-6">
+                Access to stocks, forex, crypto, and commodities
+              </p>
+              <div className="flex justify-center">
+                <Globe className="w-12 h-12 text-secondary-700" />
               </div>
-              <h3 className="text-xl font-semibold text-secondary-900 mb-2">Global Markets</h3>
-              <p className="text-secondary-600">Access to stocks, forex, crypto, and commodities</p>
             </div>
             
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-primary-600" />
+            {/* Community Card */}
+            <div className="bg-[#8fbc8f] rounded-2xl p-8 text-center">
+              <h3 className="text-xl font-bold text-secondary-900 mb-4">Community</h3>
+              <p className="text-secondary-600 mb-6">
+                Connect with millions of traders worldwide
+              </p>
+              <div className="flex justify-center">
+                <Users className="w-12 h-12 text-secondary-700" />
               </div>
-              <h3 className="text-xl font-semibold text-secondary-900 mb-2">Community</h3>
-              <p className="text-secondary-600">Connect with millions of traders worldwide</p>
             </div>
             
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-8 h-8 text-primary-600" />
+            {/* Real-time Data Card */}
+            <div className="bg-[#87ceeb] rounded-2xl p-8 text-center">
+              <h3 className="text-xl font-bold text-secondary-900 mb-4">Real-time Data</h3>
+              <p className="text-secondary-600 mb-6">
+                Live market data and instant notifications
+              </p>
+              <div className="flex justify-center">
+                <Zap className="w-12 h-12 text-secondary-700" />
               </div>
-              <h3 className="text-xl font-semibold text-secondary-900 mb-2">Real-time Data</h3>
-              <p className="text-secondary-600">Live market data and instant notifications</p>
             </div>
           </div>
         </div>
@@ -140,22 +163,16 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to start your trading journey?
-          </h2>
-          <p className="text-xl text-primary-100 mb-8">
-            Join millions of traders who trust Market Pulse for their market analysis
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/charts" className="bg-white text-primary-600 hover:bg-secondary-50 font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
-              Start Trading
-            </Link>
-            <button className="border-2 border-white text-white hover:bg-white hover:text-primary-600 font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
-              Learn More
-            </button>
+      {/* CTA Section - clean card style */}
+      <section className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-[24px] bg-[#e9ecdf] border border-secondary-200 p-10 text-center">
+            <h2 className="section-headline text-[#0a3b4a] mb-4">Ready to start your trading journey?</h2>
+            <p className="text-lg md:text-xl text-secondary-800 mb-8 max-w-2xl mx-auto">Join millions of traders who trust Market Pulse for their market analysis.</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/charts" className="btn-primary px-8 py-3">Start Trading</Link>
+              <button className="btn-secondary px-8 py-3">Learn More</button>
+            </div>
           </div>
         </div>
       </section>

@@ -51,38 +51,28 @@ const CommunityTrends = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Trending Stocks */}
-      <div className="bg-white rounded-xl shadow-sm border border-secondary-200 p-6">
+      <div className="rounded-[24px] bg-[#e9ecdf] border border-secondary-200 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-secondary-900">Trending Stocks</h3>
+          <h3 className="text-xl font-semibold text-[#0a3b4a]">Trending Stocks</h3>
           <div className="flex items-center space-x-2 text-sm text-secondary-500">
             <Activity className="w-4 h-4" />
             <span>Live</span>
           </div>
         </div>
         
-        <div className="space-y-4">
+        <div className="space-y-3">
           {trendingStocks.map((stock, index) => (
-            <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary-50 transition-colors">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                  <span className="text-sm font-bold text-primary-600">{stock.symbol}</span>
-                </div>
-                <div>
-                  <div className="font-medium text-secondary-900">{stock.symbol}</div>
-                  <div className="text-sm text-secondary-500">{stock.name}</div>
-                </div>
+            <div key={index} className="flex items-center justify-between p-4 rounded-lg hover:bg-[#e0e4d4] transition-colors">
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-[#0a3b4a] text-lg">{stock.symbol}</div>
+                <div className="text-sm text-secondary-700 truncate">{stock.name}</div>
               </div>
               
-              <div className="text-right">
-                <div className="font-semibold text-secondary-900">${stock.price}</div>
-                <div className={`text-sm font-medium ${stock.change.startsWith('+') ? 'text-success' : 'text-danger'}`}>
-                  {stock.change}
-                </div>
-              </div>
-              
-              <div className="text-right">
-                <div className="text-sm text-secondary-500">{stock.volume}</div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${getSentimentColor(stock.sentiment)}`}>
+              <div className="flex items-center space-x-2 ml-4">
+                <span className="px-3 py-1 rounded-full text-sm font-medium bg-white text-[#0a3b4a] border border-secondary-200 whitespace-nowrap">${stock.price}</span>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${stock.change.startsWith('+') ? 'text-success bg-success/10' : 'text-danger bg-danger/10'}`}>{stock.change}</span>
+                <span className="px-3 py-1 rounded-full text-sm font-medium bg-white text-secondary-800 border border-secondary-200 whitespace-nowrap">Vol {stock.volume}</span>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center space-x-1 whitespace-nowrap ${getSentimentColor(stock.sentiment)}`}>
                   {getSentimentIcon(stock.sentiment)}
                 </span>
               </div>
@@ -92,9 +82,9 @@ const CommunityTrends = () => {
       </div>
 
       {/* Market Sentiment */}
-      <div className="bg-white rounded-xl shadow-sm border border-secondary-200 p-6">
+      <div className="rounded-[24px] bg-[#e9ecdf] border border-secondary-200 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-secondary-900">Market Sentiment</h3>
+          <h3 className="text-xl font-semibold text-[#0a3b4a]">Market Sentiment</h3>
           <div className="flex items-center space-x-2 text-sm text-secondary-500">
             <Users className="w-4 h-4" />
             <span>Community</span>
@@ -104,7 +94,7 @@ const CommunityTrends = () => {
         {/* Overall Sentiment */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-secondary-700">Overall Sentiment</span>
+            <span className="text-sm font-medium text-secondary-800">Overall Sentiment</span>
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${getSentimentColor(marketSentiment.overall)}`}>
               {getSentimentIcon(marketSentiment.overall)}
               <span className="ml-1 capitalize">{marketSentiment.overall}</span>
@@ -112,14 +102,14 @@ const CommunityTrends = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <div className="text-3xl font-bold text-secondary-900">{marketSentiment.score}</div>
+            <div className="text-3xl font-bold text-[#0a3b4a]">{marketSentiment.score}</div>
             <div className="text-sm text-secondary-500">
               <span className="text-success">+{marketSentiment.change}</span> from yesterday
             </div>
           </div>
           
           {/* Sentiment Bar */}
-          <div className="w-full bg-secondary-200 rounded-full h-2 mt-3">
+          <div className="w-full bg-white rounded-full h-2 mt-3">
             <div 
               className="bg-gradient-to-r from-danger via-warning to-success h-2 rounded-full transition-all duration-300"
               style={{ width: `${marketSentiment.score}%` }}
@@ -133,9 +123,9 @@ const CommunityTrends = () => {
           <div className="space-y-3">
             {marketSentiment.sectors.map((sector, index) => (
               <div key={index} className="flex items-center justify-between">
-                <span className="text-sm text-secondary-600">{sector.name}</span>
+                <span className="text-sm text-secondary-800">{sector.name}</span>
                 <div className="flex items-center space-x-2">
-                  <div className="w-16 bg-secondary-200 rounded-full h-2">
+                  <div className="w-16 bg-white rounded-full h-2">
                     <div 
                       className={`h-2 rounded-full transition-all duration-300 ${
                         sector.sentiment === 'bullish' ? 'bg-success' : 

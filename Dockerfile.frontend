@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -26,13 +26,13 @@ RUN npm install -g serve express
 # Copy built app from build stage
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.js ./
-COPY --from=build /app/package.json ./
 
-# Create a minimal package.json for production
-RUN echo '{"dependencies":{"express":"^4.18.0"}}' > package.json && npm install
+# Create a minimal package.json for production with Express
+RUN echo '{"name":"market-pulse-frontend","version":"1.0.0","dependencies":{"express":"^4.18.0"}}' > package.json && npm install
 
 # Expose port
 EXPOSE 3000
 
 # Start the server
 CMD ["node", "server.js"]
+

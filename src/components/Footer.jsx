@@ -12,6 +12,7 @@ import {
   Palette,
   Zap
 } from 'lucide-react'
+import TraceIcon from './TraceIcon'
 
 const Footer = () => {
   const navigate = useNavigate()
@@ -81,13 +82,13 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="bg-secondary-900 text-white">
+    <footer className="bg-white text-secondary-900 border-t border-secondary-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
           {footerSections.map((section, index) => (
             <div key={index}>
-              <h3 className="text-sm font-semibold text-secondary-300 uppercase tracking-wider mb-4">
+              <h3 className="text-sm font-semibold text-secondary-700 uppercase tracking-wider mb-4">
                 {section.title}
               </h3>
               <ul className="space-y-2">
@@ -96,7 +97,7 @@ const Footer = () => {
                     {link.type === 'external' ? (
                       <button
                         onClick={() => handleExternalLink(link.href)}
-                        className="text-sm text-secondary-400 hover:text-white transition-colors duration-200 flex items-center space-x-2"
+                        className="text-sm text-secondary-700 hover:text-secondary-900 transition-colors duration-200 flex items-center space-x-2"
                       >
                         <link.icon className="w-3 h-3" />
                         <span>{link.name}</span>
@@ -104,7 +105,7 @@ const Footer = () => {
                     ) : (
                       <Link 
                         to={link.href}
-                        className="text-sm text-secondary-400 hover:text-white transition-colors duration-200 flex items-center space-x-2"
+                        className="text-sm text-secondary-700 hover:text-secondary-900 transition-colors duration-200 flex items-center space-x-2"
                       >
                         <link.icon className="w-3 h-3" />
                         <span>{link.name}</span>
@@ -118,20 +119,18 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-secondary-800 pt-8">
+        <div className="border-t border-primary-200 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             {/* Logo and Copyright */}
             <div className="flex items-center space-x-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-white" />
-              </div>
-              <div className="text-sm text-secondary-400">
+              <TraceIcon className="w-5 h-5" />
+              <div className="text-sm text-secondary-700">
                 © 2025 Market Pulse, Inc.
               </div>
             </div>
 
             {/* Additional Info */}
-            <div className="text-sm text-secondary-400 text-center md:text-right">
+            <div className="text-sm text-secondary-700 text-center md:text-right">
               <p>Select market data provided by ICE Data services.</p>
               <p>Select reference data provided by FactSet.</p>
               <p>Copyright © 2025 FactSet Research Systems Inc.</p>

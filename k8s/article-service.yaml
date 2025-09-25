@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: article-service
-        image: gcr.io/PROJECT_ID/article-service:latest
+        image: marketpulse/article-service:latest
         ports:
         - containerPort: 8080
         env:
@@ -72,3 +72,4 @@ spec:
     targetPort: 8080
     protocol: TCP
   type: ClusterIP
+
