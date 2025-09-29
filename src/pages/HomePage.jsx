@@ -21,7 +21,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             {/* Text Content */}
-            <div className="flex-1 text-left">
+            <div className="flex-1 text-center">
               <div className="text-sm font-semibold tracking-wider uppercase text-secondary-700 mb-2">BRINGING IDEAS TO LIFE</div>
               <div className="w-16 h-0.5 bg-secondary-300 mb-6"></div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-secondary-900 mb-6 leading-tight">
@@ -30,11 +30,13 @@ const HomePage = () => {
               <p className="text-lg text-secondary-600 mb-8">
                 Join 100 million traders and investors taking the future into their own hands.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/charts" className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-base flex items-center space-x-2">
-                  <span>Get started for free</span>
-                  <span className="text-xs opacity-80">$0 forever, no credit card needed</span>
+              <div className="flex justify-center">
+                <Link to="/charts" className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-base">
+                  Get started for free
                 </Link>
+              </div>
+              <div className="mt-2 text-xs text-secondary-500 text-center">
+                $0 forever, no credit card needed
               </div>
             </div>
             
@@ -66,7 +68,7 @@ const HomePage = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Supercharts Card */}
-            <div className="bg-[#d4c4a8] rounded-2xl p-8 text-center">
+            <div className="bg-[#f2ecdf] rounded-2xl p-8 text-center">
               <h3 className="text-xl font-bold text-secondary-900 mb-4">Supercharts</h3>
               <p className="text-secondary-600 mb-6">
                 Professional-grade charting with 100+ indicators
@@ -77,7 +79,7 @@ const HomePage = () => {
             </div>
             
             {/* Global Markets Card */}
-            <div className="bg-[#d4a853] rounded-2xl p-8 text-center">
+            <div className="bg-[#f7e7b8] rounded-2xl p-8 text-center">
               <h3 className="text-xl font-bold text-secondary-900 mb-4">Global Markets</h3>
               <p className="text-secondary-600 mb-6">
                 Access to stocks, forex, crypto, and commodities
@@ -88,7 +90,7 @@ const HomePage = () => {
             </div>
             
             {/* Community Card */}
-            <div className="bg-[#8fbc8f] rounded-2xl p-8 text-center">
+            <div className="bg-[#e8f6e8] rounded-2xl p-8 text-center">
               <h3 className="text-xl font-bold text-secondary-900 mb-4">Community</h3>
               <p className="text-secondary-600 mb-6">
                 Connect with millions of traders worldwide
@@ -99,7 +101,7 @@ const HomePage = () => {
             </div>
             
             {/* Real-time Data Card */}
-            <div className="bg-[#87ceeb] rounded-2xl p-8 text-center">
+            <div className="bg-[#e6f7fd] rounded-2xl p-8 text-center">
               <h3 className="text-xl font-bold text-secondary-900 mb-4">Real-time Data</h3>
               <p className="text-secondary-600 mb-6">
                 Live market data and instant notifications

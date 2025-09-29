@@ -23,6 +23,7 @@ tar -czf marketpulse-deploy.tar.gz \
     --exclude=target \
     --exclude=*.log \
     --exclude=.DS_Store \
+    --exclude=*.tar.gz \
     .
 
 echo "📤 Uploading to EC2..."
