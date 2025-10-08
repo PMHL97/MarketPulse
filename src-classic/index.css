@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-secondary-900 font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* PixelCraft-style typography */
+  .eyebrow {
+    @apply text-sm font-semibold tracking-wider uppercase text-primary-600;
+  }
+  
+  .hero-headline {
+    @apply text-hero md:text-hero-lg font-extrabold leading-tight tracking-tight;
+  }
+  
+  .section-headline {
+    @apply text-section md:text-section-lg font-extrabold leading-tight tracking-tight;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-white text-[#0a3b4a] border border-[#e0e9bd] hover:bg-[#f8f9f5] font-medium py-2 px-4 rounded-full transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-[#eef8c9] text-[#0a3b4a] border border-[#e0e9bd] hover:bg-[#e6f2b9] font-medium py-2 px-4 rounded-full transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-secondary-200 p-6;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white;
+  }
+  
+  .chart-container {
+    @apply bg-white rounded-lg border border-secondary-200 p-4;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
+  }
+  
+  .shadow-soft {
+    box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+  }
+}

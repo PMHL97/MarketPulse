@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
+    "dev:ai": "vite --config vite.config.ai.js",
     "build": "vite build",
+    "build:ai": "vite build --config vite.config.ai.js",
     "preview": "vite preview",
+    "preview:ai": "vite preview --config vite.config.ai.js",
     "start": "node server.js",
     "backend:up": "docker-compose up -d",
     "backend:down": "docker-compose down",
-    "backend:logs": "docker-compose logs -f"
+    "backend:logs": "docker-compose logs -f",
+    "stock-service": "cd backend/stock-data-service && python app.py",
+    "stock-service:install": "cd backend/stock-data-service && pip install -r requirements.txt"
   },
   "dependencies": {
     "react": "^18.2.0",

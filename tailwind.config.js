@@ -3,6 +3,8 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./src-ai/**/*.{js,ts,jsx,tsx}",
+    "./index-ai.html",
   ],
   theme: {
     extend: {

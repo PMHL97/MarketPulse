@@ -31,6 +31,27 @@ spec:
             name: analysis-service
             port:
               number: 5001
+      - path: /api/stock
+        pathType: Prefix
+        backend:
+          service:
+            name: stock-data-service
+            port:
+              number: 5003
+      - path: /api/stocks
+        pathType: Prefix
+        backend:
+          service:
+            name: stock-data-service
+            port:
+              number: 5003
+      - path: /metrics
+        pathType: Prefix
+        backend:
+          service:
+            name: stock-data-service
+            port:
+              number: 5003
       - path: /
         pathType: Prefix
         backend:

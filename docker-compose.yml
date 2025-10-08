@@ -61,6 +61,26 @@ services:
     depends_on:
       - redis
 
+  stock-data-service:
+    build: ./backend/stock-data-service
+    ports:
+      - "5003:5003"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CACHE_DURATION: 30
+      MAX_WORKERS: 5
+      TIMEOUT: 10
+      FLASK_ENV: production
+      FLASK_DEBUG: false
+      # API Keys (set these in production)
+      # TWELVE_DATA_API_KEY: your_twelve_data_key
+      # ALPHA_VANTAGE_API_KEY: your_alpha_vantage_key
+      # FINNHUB_API_KEY: your_finnhub_key
+      # POLYGON_API_KEY: your_polygon_key
+    depends_on:
+      - redis
+
   # Frontend will run via npm run dev (Vite) on port 3001
   # The backend services will be available for the frontend to consume
 

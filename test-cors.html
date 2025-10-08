@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test CORS - Market Pulse</title>
+</head>
+<body>
+    <h1>Test CORS - Market Pulse Backend</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testBackend() {
+            const results = document.getElementById('results');
+            
+            try {
+                // Test health endpoint
+                console.log('Testing health endpoint...');
+                const healthResponse = await fetch('http://localhost:5003/api/health');
+                const healthData = await healthResponse.json();
+                console.log('Health check:', healthData);
+                results.innerHTML += '<p>✅ Health check: ' + JSON.stringify(healthData) + '</p>';
+                
+                // Test single stock endpoint
+                console.log('Testing single stock endpoint...');
+                const stockResponse = await fetch('http://localhost:5003/api/stock/AAPL');
+                const stockData = await stockResponse.json();
+                console.log('AAPL data:', stockData);
+                results.innerHTML += '<p>✅ AAPL data: ' + JSON.stringify(stockData) + '</p>';
+                
+                // Test batch endpoint
+                console.log('Testing batch endpoint...');
+                const batchResponse = await fetch('http://localhost:5003/api/stocks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        symbols: ['AAPL', 'MSFT', 'GOOGL']
+                    })
+                });
+                const batchData = await batchResponse.json();
+                console.log('Batch data:', batchData);
+                results.innerHTML += '<p>✅ Batch data: ' + JSON.stringify(batchData) + '</p>';
+                
+                results.innerHTML += '<p>🎉 All tests passed! Backend is accessible from browser.</p>';
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+                results.innerHTML += '<p>❌ Test failed: ' + error.message + '</p>';
+            }
+        }
+        
+        // Run test when page loads
+        testBackend();
+    </script>
+</body>
+</html>

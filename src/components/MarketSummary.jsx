@@ -1,8 +1,36 @@
-import React from 'react'
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { TrendingUp, TrendingDown, Minus, RefreshCw } from 'lucide-react'
+import useMarketDataStore from '../store/marketDataStore'
 
 const MarketSummary = () => {
-  const marketData = {
+  const { marketOverview, fetchMarketOverview, isLoading } = useMarketDataStore()
+  const [lastUpdated, setLastUpdated] = useState(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  // Load initial data
+  useEffect(() => {
+    fetchMarketOverview()
+  }, [fetchMarketOverview])
+
+  // Set up real-time updates
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      setIsRefreshing(true)
+      try {
+        await fetchMarketOverview()
+        setLastUpdated(new Date())
+      } catch (error) {
+        console.error('Failed to update market data:', error)
+      } finally {
+        setIsRefreshing(false)
+      }
+    }, 10000) // Update every 10 seconds
+
+    return () => clearInterval(interval)
+  }, [fetchMarketOverview])
+
+  // Use real-time data or fallback to static data
+  const marketData = marketOverview || {
     indices: [
       { name: 'Nasdaq 100', symbol: 'NDX', price: '15,234.56', change: '+1.23%', trend: 'up' },
       { name: 'Japan 225', symbol: 'NI225', price: '32,456.78', change: '-0.45%', trend: 'down' },
@@ -50,7 +78,12 @@ const MarketSummary = () => {
 
   const MarketCard = ({ title, data, className = '' }) => (
     <div className={`rounded-[24px] bg-[#e9ecdf] border border-secondary-200 p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-[#0a3b4a] mb-4">{title}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-[#0a3b4a]">{title}</h3>
+        {isRefreshing && (
+          <RefreshCw className="w-4 h-4 text-secondary-500 animate-spin" />
+        )}
+      </div>
       <div className="space-y-3">
         {data.map((item, index) => (
           <div key={index} className="flex items-center justify-between py-2 border-b border-secondary-200/60 last:border-b-0">
@@ -74,11 +107,27 @@ const MarketSummary = () => {
   )
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <MarketCard title="Major Indices" data={marketData.indices} />
-      <MarketCard title="Cryptocurrency" data={marketData.crypto} />
-      <MarketCard title="Commodities" data={marketData.commodities} />
-      <MarketCard title="Forex" data={marketData.forex} />
+    <div className="space-y-6">
+      {/* Real-time indicator */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-sm text-secondary-600">
+            {lastUpdated ? `Last updated: ${lastUpdated.toLocaleTimeString()}` : 'Real-time data'}
+          </span>
+        </div>
+        {isLoading && (
+          <div className="text-sm text-secondary-500">Loading...</div>
+        )}
+      </div>
+      
+      {/* Market cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <MarketCard title="Major Indices" data={marketData.indices} />
+        <MarketCard title="Cryptocurrency" data={marketData.crypto} />
+        <MarketCard title="Commodities" data={marketData.commodities} />
+        <MarketCard title="Forex" data={marketData.forex} />
+      </div>
     </div>
   )
 }

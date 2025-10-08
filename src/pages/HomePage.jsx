@@ -12,6 +12,7 @@ import {
 import MarketSummary from '../components/MarketSummary'
 import FeaturedIdeas from '../components/FeaturedIdeas'
 import CommunityTrends from '../components/CommunityTrends'
+import RealtimeDashboard from '../components/RealtimeDashboard'
 
 const HomePage = () => {
   return (
@@ -49,6 +50,13 @@ const HomePage = () => {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Real-time Market Dashboard */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RealtimeDashboard />
         </div>
       </section>
 
