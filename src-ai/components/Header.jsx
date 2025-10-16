@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { 
   Bot, 
@@ -16,6 +16,23 @@ const Header = () => {
   const [authMode, setAuthMode] = useState('login')
   const [showNotifications, setShowNotifications] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    // Initialize theme from localStorage or system preference
+    const stored = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    const shouldDark = stored ? stored === 'dark' : prefersDark
+    setIsDark(shouldDark)
+    document.documentElement.classList.toggle('dark', shouldDark)
+  }, [])
+
+  const toggleTheme = () => {
+    const next = !isDark
+    setIsDark(next)
+    document.documentElement.classList.toggle('dark', next)
+    localStorage.setItem('theme', next ? 'dark' : 'light')
+  }
   
   const location = useLocation()
   const { user, isAuthenticated, logout } = useAuthStore()
@@ -33,7 +50,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+      <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -44,7 +61,7 @@ const Header = () => {
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
                 </div>
                 <div>
-                  <span className="text-xl font-extrabold text-slate-900">Market Pulse</span>
+                  <span className="text-xl font-extrabold text-slate-900 dark:text-slate-100">Market Pulse</span>
                 </div>
               </Link>
             </div>
@@ -71,7 +88,23 @@ const Header = () => {
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              {/* Dark mode toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 transition-colors"
+                title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDark ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75c-5.385 0-9.75-4.365-9.75-9.75 0-4.28 2.734-7.92 6.56-9.23a.75.75 0 0 1 .967.966A8.25 8.25 0 0 0 20.25 14.25a.75.75 0 0 1 1.502.752z" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75zM12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM4.72 4.72a.75.75 0 0 1 1.06 0l1.59 1.59a.75.75 0 1 1-1.06 1.06L4.72 5.78a.75.75 0 0 1 0-1.06zm12.91 12.91a.75.75 0 0 1 1.06 0l1.59 1.59a.75.75 0 1 1-1.06 1.06l-1.59-1.59a.75.75 0 0 1 0-1.06zM2.25 12a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5H3a.75.75 0 0 1-.75-.75zm15.75 0a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5H18a.75.75 0 0 1-.75-.75zM4.72 19.28a.75.75 0 0 1 1.06 0l1.59-1.59a.75.75 0 1 1 1.06 1.06L6.84 20.34a.75.75 0 0 1-1.06 0zm12.91-12.91a.75.75 0 0 1 1.06 0l1.59-1.59a.75.75 0 1 1-1.06 1.06l-1.59 1.59a.75.75 0 0 1-1.06 0zM12 18.75a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V19.5a.75.75 0 0 1 .75-.75z" />
+                  </svg>
+                )}
+              </button>
               {/* Auth buttons */}
               {!isAuthenticated ? (
                 <div className="flex items-center space-x-2">

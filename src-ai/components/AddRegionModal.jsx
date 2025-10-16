@@ -78,32 +78,32 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-slate-800">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
             {modalType === 'region' && 'Add Custom Region'}
             {modalType === 'stock' && 'Add to Watchlist'}
             {modalType === 'category' && 'Add to Category'}
           </h2>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5 text-gray-500" />
+            <X className="w-5 h-5 text-gray-500 dark:text-slate-400" />
           </button>
         </div>
 
         {/* Modal Type Selector */}
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-6 border-b border-gray-200 dark:border-slate-800">
           <div className="flex space-x-2">
             <button
               onClick={() => setModalType('region')}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 modalType === 'region'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Custom Region
@@ -112,8 +112,8 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
               onClick={() => setModalType('stock')}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 modalType === 'stock'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Add Stock
@@ -122,8 +122,8 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
               onClick={() => setModalType('category')}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 modalType === 'category'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Add to Category
@@ -136,7 +136,7 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
           {modalType === 'region' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                   Region Name
                 </label>
                 <input
@@ -144,11 +144,11 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
                   value={regionName}
                   onChange={(e) => setRegionName(e.target.value)}
                   placeholder="e.g., Tech Stocks, Energy Sector"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                   Stock Symbols (comma-separated)
                 </label>
                 <input
@@ -156,7 +156,7 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
                   value={regionSymbols}
                   onChange={(e) => setRegionSymbols(e.target.value)}
                   placeholder="e.g., AAPL, TSLA, NVDA, MSFT"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
                 />
               </div>
             </>
@@ -164,7 +164,7 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
 
           {modalType === 'stock' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                 Stock Symbol
               </label>
               <div className="relative">
@@ -176,14 +176,14 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
                     handleSearch(e.target.value)
                   }}
                   placeholder="e.g., AAPL"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
                 />
-                <Search className="absolute right-3 top-2.5 w-4 h-4 text-gray-400" />
+                <Search className="absolute right-3 top-2.5 w-4 h-4 text-gray-400 dark:text-slate-500" />
               </div>
               
               {/* Search Results */}
               {searchResults.length > 0 && (
-                <div className="mt-2 border border-gray-200 rounded-lg max-h-40 overflow-y-auto">
+                <div className="mt-2 border border-gray-200 dark:border-slate-700 rounded-lg max-h-40 overflow-y-auto">
                   {searchResults.map((result, index) => (
                     <button
                       key={index}
@@ -191,10 +191,10 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
                         setStockSymbol(result.symbol)
                         setSearchResults([])
                       }}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                      className="w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-slate-800 border-b border-gray-100 dark:border-slate-700 last:border-b-0"
                     >
-                      <div className="font-medium text-gray-900">{result.symbol}</div>
-                      <div className="text-sm text-gray-500">{result.name}</div>
+                      <div className="font-medium text-gray-900 dark:text-slate-100">{result.symbol}</div>
+                      <div className="text-sm text-gray-500 dark:text-slate-400">{result.name}</div>
                     </button>
                   ))}
                 </div>
@@ -205,7 +205,7 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
           {modalType === 'category' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                   Stock Symbol
                 </label>
                 <div className="relative">
@@ -217,14 +217,14 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
                       handleSearch(e.target.value)
                     }}
                     placeholder="e.g., AAPL"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
                   />
-                  <Search className="absolute right-3 top-2.5 w-4 h-4 text-gray-400" />
+                <Search className="absolute right-3 top-2.5 w-4 h-4 text-gray-400 dark:text-slate-500" />
                 </div>
                 
                 {/* Search Results */}
                 {searchResults.length > 0 && (
-                  <div className="mt-2 border border-gray-200 rounded-lg max-h-40 overflow-y-auto">
+                <div className="mt-2 border border-gray-200 dark:border-slate-700 rounded-lg max-h-40 overflow-y-auto">
                     {searchResults.map((result, index) => (
                       <button
                         key={index}
@@ -232,10 +232,10 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
                           setStockSymbol(result.symbol)
                           setSearchResults([])
                         }}
-                        className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                      className="w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-slate-800 border-b border-gray-100 dark:border-slate-700 last:border-b-0"
                       >
-                        <div className="font-medium text-gray-900">{result.symbol}</div>
-                        <div className="text-sm text-gray-500">{result.name}</div>
+                      <div className="font-medium text-gray-900 dark:text-slate-100">{result.symbol}</div>
+                      <div className="text-sm text-gray-500 dark:text-slate-400">{result.name}</div>
                       </button>
                     ))}
                   </div>
@@ -243,13 +243,13 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                   Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
                 >
                   {categories.map(category => (
                     <option key={category} value={category}>{category}</option>
@@ -261,10 +261,10 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end space-x-3 p-6 border-t border-gray-200">
+        <div className="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-slate-800">
           <button
             onClick={handleClose}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-slate-200 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
           >
             Cancel
           </button>
@@ -282,3 +282,6 @@ const AddRegionModal = ({ isOpen, onClose, onAddRegion, onAddToWatchlist, onAddT
 }
 
 export default AddRegionModal
+
+
+

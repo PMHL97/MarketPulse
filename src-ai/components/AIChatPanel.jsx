@@ -57,6 +57,7 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
   const [showAdvancedAnalytics, setShowAdvancedAnalytics] = useState(false)
   const [authMode, setAuthMode] = useState('login')
   const [realNews, setRealNews] = useState([])
+  const [isDark, setIsDark] = useState(false)
 
   // Fetch real news data
   const fetchRealNews = async () => {
@@ -71,6 +72,46 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
   // Load news on component mount
   useEffect(() => {
     fetchRealNews()
+  }, [])
+
+  // Initialize theme from localStorage or system preference
+  useEffect(() => {
+    const stored = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    const shouldDark = stored ? stored === 'dark' : prefersDark
+    setIsDark(shouldDark)
+    document.documentElement.classList.toggle('dark', shouldDark)
+  }, [])
+
+  const toggleTheme = () => {
+    const next = !isDark
+    setIsDark(next)
+    document.documentElement.classList.toggle('dark', next)
+    localStorage.setItem('theme', next ? 'dark' : 'light')
+  }
+
+  // Respond to system theme changes (when no explicit user preference stored)
+  useEffect(() => {
+    if (!window.matchMedia) return
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = (e) => {
+      // Always follow system preference, overriding any stored preference
+      document.documentElement.classList.toggle('dark', e.matches)
+      setIsDark(e.matches)
+      localStorage.setItem('theme', e.matches ? 'dark' : 'light')
+    }
+    if (media.addEventListener) {
+      media.addEventListener('change', handleChange)
+    } else if (media.addListener) {
+      media.addListener(handleChange)
+    }
+    return () => {
+      if (media.removeEventListener) {
+        media.removeEventListener('change', handleChange)
+      } else if (media.removeListener) {
+        media.removeListener(handleChange)
+      }
+    }
   }, [])
 
   // Enhanced AI responses using Gemini API
@@ -312,31 +353,31 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
   }, [])
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white dark:bg-slate-900 shadow-lg rounded-3xl overflow-hidden">
         {/* Header - brand */}
-        <div className="p-4 relative rounded-t-lg">
+        <div className="p-0 relative">
           {/* Floating pill: Logo + title (Home button) */}
           <button 
             onClick={onHomeClick}
-            className="absolute top-4 left-4 flex items-center space-x-2 bg-white border border-gray-200 rounded-full px-3 py-1.5 shadow-sm h-8 hover:bg-gray-50 transition-colors cursor-pointer"
+            className="absolute top-4 left-4 flex items-center space-x-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-full px-3 py-1.5 shadow-sm h-8 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors cursor-pointer z-20"
             title="Go to Home"
           >
-            <img src="/trace.svg" alt="Market Pulse" className="w-5 h-5" />
-            <span className="text-xs sm:text-sm font-semibold text-slate-900">Market Pulse</span>
+            <img src="/trace.svg" alt="Market Pulse" className="w-5 h-5 invert-0 dark:invert" />
+            <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">Market Pulse</span>
           </button>
           {/* Floating pills: icons (account) */}
-          <div className="absolute top-4 right-4 flex items-center gap-2">
+          <div className="absolute top-4 right-4 flex items-center gap-2 z-20">
             <div className="relative user-menu-container">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="p-1.5 bg-white border border-gray-200 rounded-full shadow-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 h-8 w-8"
+                className="p-1.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full shadow-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700 h-8 w-8 flex items-center justify-center"
                 title="Account"
                 aria-label="Account"
               >
                 <User className="w-4 h-4" />
               </button>
               {showUserMenu && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-50">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-50">
                   <div className="py-2">
                     {!isAuthenticated ? (
                       <>
@@ -346,7 +387,7 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                             setAuthMode('login')
                             setShowAuthModal(true)
                           }}
-                          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                          className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                         >
                           Log In
                         </button>
@@ -356,23 +397,23 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                             setAuthMode('register')
                             setShowAuthModal(true)
                           }}
-                          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                          className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                         >
                           Sign Up
                         </button>
                       </>
                     ) : (
                       <>
-                        <div className="px-4 py-2 border-b border-slate-200">
-                          <div className="text-sm font-medium text-slate-900">{user?.name || 'User'}</div>
-                          <div className="text-xs text-slate-500">{user?.email}</div>
+                        <div className="px-4 py-2 border-b border-slate-200 dark:border-slate-700">
+                          <div className="text-sm font-medium text-slate-900 dark:text-slate-100">{user?.name || 'User'}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">{user?.email}</div>
                         </div>
                         <button
                           onClick={() => { 
                             setShowUserMenu(false)
                             setShowUserProfile(true)
                           }}
-                          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                          className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                         >
                           Profile
                         </button>
@@ -381,7 +422,7 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                             setShowUserMenu(false)
                             setShowPortfolioTracker(true)
                           }}
-                          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                          className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                         >
                           Portfolio Tracker
                         </button>
@@ -390,7 +431,7 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                             setShowUserMenu(false)
                             setShowTradingAlerts(true)
                           }}
-                          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                          className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                         >
                           Trading Alerts
                         </button>
@@ -399,11 +440,11 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                             setShowUserMenu(false)
                             setShowAdvancedAnalytics(true)
                           }}
-                          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                          className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                         >
                           Advanced Analytics
                         </button>
-                        <div className="border-t border-slate-200 my-2"></div>
+                        <div className="border-t border-slate-200 dark:border-slate-700 my-2"></div>
                         <button
                           onClick={() => { 
                             setShowUserMenu(false)
@@ -419,36 +460,66 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                 </div>
               )}
             </div>
+            {/* Theme toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-1.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full shadow-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700 h-8 w-8 flex items-center justify-center"
+              title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-label="Toggle theme"
+            >
+              {isDark ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75c-5.385 0-9.75-4.365-9.75-9.75 0-4.28 2.734-7.92 6.56-9.23a.75.75 0 0 1 .967.966A8.25 8.25 0 0 0 20.25 14.25a.75.75 0 0 1 1.502.752z" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75zM12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM4.72 4.72a.75.75 0 0 1 1.06 0l1.59 1.59a.75.75 0 1 1-1.06 1.06L4.72 5.78a.75.75 0 0 1 0-1.06zm12.91 12.91a.75.75 0 0 1 1.06 0l1.59 1.59a.75.75 0 1 1-1.06 1.06l-1.59-1.59a.75.75 0 0 1 0-1.06zM2.25 12a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5H3a.75.75 0 0 1-.75-.75zm15.75 0a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5H18a.75.75 0 0 1-.75-.75zM4.72 19.28a.75.75 0 0 1 1.06 0l1.59-1.59a.75.75 0 1 1 1.06 1.06L6.84 20.34a.75.75 0 0 1-1.06 0zm12.91-12.91a.75.75 0 0 1 1.06 0l1.59-1.59a.75.75 0 1 1-1.06 1.06l-1.59 1.59a.75.75 0 0 1-1.06 0zM12 18.75a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V19.5a.75.75 0 0 1 .75-.75z" />
+                </svg>
+              )}
+            </button>
           </div>
+          
+          {/* Gradient fade out effect at top - below floating elements */}
+          <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white via-white/80 to-transparent dark:from-slate-900 dark:via-slate-900/80 to-transparent pointer-events-none z-10"></div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 pt-8 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 pt-16 space-y-6 text-slate-900 dark:text-slate-100">
           {/* Welcome Message */}
           {showWelcome && (
-            <div className="mb-4 flex flex-col items-center justify-center text-center py-8">
-              <h3 className="text-2xl font-bold text-slate-700/40 mb-1">Welcome to Market Pulse,</h3>
-              <p className="text-2xl font-bold text-slate-700/40 leading-relaxed">
+            <div className="mb-6 flex flex-col items-center justify-center text-center py-8">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-green-500/40 via-green-700/50 to-green-900/60 bg-clip-text text-transparent dark:text-slate-200 dark:bg-none mb-1">Welcome to Market Pulse,</h3>
+              <p className="text-2xl font-bold bg-gradient-to-r from-green-500/40 via-green-700/50 to-green-900/60 bg-clip-text text-transparent dark:text-slate-200 dark:bg-none leading-relaxed">
                 your AI trading agent 
               </p>
+              <div className="mt-4 flex justify-end w-full">
+                <a 
+                  href="https://pmhl97.github.io/phillip/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="opacity-80 hover:opacity-90 transition-opacity duration-200"
+                >
+                  <img src="/namelogo.svg" alt="Phillip Minghao Li" className="h-6 w-auto invert-0 dark:invert" />
+                </a>
+              </div>
             </div>
           )}
           
           {/* What's going on with the markets today? */}
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">What's going on with the markets today?</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
+          <div className="mb-6">
+            <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-2">What's going on with the markets today?</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
               The S&P 500 and Nasdaq Composite indices have closed at new record highs. This mixed performance comes as a US government shutdown extends into its sixth day.
             </p>
           </div>
 
           {/* Trading Recommendations embedded */}
-          <div className="mb-6">
+          <div className="mb-8">
             <div 
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => setIsRecommendationsCollapsed(!isRecommendationsCollapsed)}
             >
-              <h3 className="text-lg font-semibold text-slate-900">AI Recommendations</h3>
+              <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100">AI Recommendations</h3>
               <svg 
                 className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
                   isRecommendationsCollapsed ? 'rotate-180' : ''
@@ -468,12 +539,12 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
 
           {/* Market Movers */}
           {marketMovers && (
-            <div className="mb-6">
+            <div className="mb-8">
               <div 
                 className="flex items-center justify-between cursor-pointer mb-3"
                 onClick={() => setIsMarketMoversCollapsed(!isMarketMoversCollapsed)}
               >
-                <h3 className="text-lg font-semibold text-slate-900">Market Movers</h3>
+                <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100">Market Movers</h3>
                 <svg 
                   className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
                     isMarketMoversCollapsed ? 'rotate-180' : ''
@@ -490,22 +561,22 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                 <>
                   {/* Most Active */}
                   <div className="mb-4">
-                <h4 className="text-sm font-medium text-slate-700 mb-2">Most Active</h4>
+                <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Most Active</h4>
                 <div className="space-y-2">
                   {marketMovers.mostActive?.slice(0, 3).map((stock, index) => (
                     <div 
                       key={index} 
-                      className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors shadow-sm"
+                      className="flex items-center justify-between p-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 cursor-pointer transition-colors shadow-sm"
                       onClick={() => onStockClick(stock.symbol)}
                     >
                       <div className="flex-1">
                         <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-gray-900 text-sm">{stock.symbol}</span>
-                          <span className="text-xs text-gray-600 truncate">{stock.name}</span>
+                          <span className="font-normal text-slate-900 dark:text-slate-100 text-sm">{stock.symbol}</span>
+                          <span className="text-xs text-gray-600 dark:text-slate-400 truncate">{stock.name}</span>
                         </div>
-                        <div className="text-xs text-gray-700">{stock.price}</div>
+                        <div className="text-xs text-gray-700 dark:text-slate-400">{stock.price}</div>
                       </div>
-                      <div className={`text-xs font-semibold flex items-center ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+                      <div className={`text-xs font-normal flex items-center ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
                         {stock.trend === 'up' ? '↗' : '↘'} {stock.change}
                       </div>
                     </div>
@@ -515,22 +586,22 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
 
               {/* Daily Gainers */}
               <div className="mb-4">
-                <h4 className="text-sm font-medium text-slate-700 mb-2">Daily Gainers</h4>
+                <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Daily Gainers</h4>
                 <div className="space-y-2">
                   {marketMovers.dailyGainers?.slice(0, 3).map((stock, index) => (
                     <div 
                       key={index} 
-                      className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors shadow-sm"
+                      className="flex items-center justify-between p-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 cursor-pointer transition-colors shadow-sm"
                       onClick={() => onStockClick(stock.symbol)}
                     >
                       <div className="flex-1">
                         <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-gray-900 text-sm">{stock.symbol}</span>
-                          <span className="text-xs text-gray-600 truncate">{stock.name}</span>
+                          <span className="font-normal text-slate-900 dark:text-slate-100 text-sm">{stock.symbol}</span>
+                          <span className="text-xs text-gray-600 dark:text-slate-400 truncate">{stock.name}</span>
                         </div>
-                        <div className="text-xs text-gray-700">{stock.price}</div>
+                        <div className="text-xs text-gray-700 dark:text-slate-400">{stock.price}</div>
                       </div>
-                      <div className="text-xs font-semibold text-green-600 flex items-center">
+                      <div className="text-xs font-normal text-green-600 flex items-center">
                         ↗ {stock.change}
                       </div>
                     </div>
@@ -540,22 +611,22 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
 
               {/* Daily Losers */}
               <div className="mb-4">
-                <h4 className="text-sm font-medium text-slate-700 mb-2">Daily Losers</h4>
+                <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Daily Losers</h4>
                 <div className="space-y-2">
                   {marketMovers.dailyLosers?.slice(0, 3).map((stock, index) => (
                     <div 
                       key={index} 
-                      className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors shadow-sm"
+                      className="flex items-center justify-between p-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 cursor-pointer transition-colors shadow-sm"
                       onClick={() => onStockClick(stock.symbol)}
                     >
                       <div className="flex-1">
                         <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-gray-900 text-sm">{stock.symbol}</span>
-                          <span className="text-xs text-gray-600 truncate">{stock.name}</span>
+                          <span className="font-normal text-slate-900 dark:text-slate-100 text-sm">{stock.symbol}</span>
+                          <span className="text-xs text-gray-600 dark:text-slate-400 truncate">{stock.name}</span>
                         </div>
-                        <div className="text-xs text-gray-700">{stock.price}</div>
+                        <div className="text-xs text-gray-700 dark:text-slate-400">{stock.price}</div>
                       </div>
-                      <div className="text-xs font-semibold text-red-600 flex items-center">
+                      <div className="text-xs font-normal text-red-600 flex items-center">
                         ↘ {stock.change}
                       </div>
                     </div>
@@ -568,23 +639,23 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
           )}
 
           {messages.map((message, index) => (
-            <div key={message.id} className="mb-6" data-chat-message>
+            <div key={message.id} className="mb-8" data-chat-message>
               {message.type === 'user' ? (
                 <div className="mb-3">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{message.content}</h3>
+                  <h3 className="text-lg font-normal text-slate-900 mb-2">{message.content}</h3>
                 </div>
               ) : (
                 <div className="text-left">
-                  <div className="text-sm text-slate-600 leading-relaxed mb-3">
+                  <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-3">
                     {renderMessageWithClickableStocks(message.content)}
                   </div>
                   
                   {/* Graph/Chart content */}
                   {message.graph && (
-                    <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                      <div className="text-sm font-medium text-gray-700 mb-3">{message.graph.title}</div>
-                      <div className="h-40 bg-white rounded border border-gray-200 flex items-center justify-center">
-                        <div className="text-gray-400 text-sm">📊 {message.graph.type} Chart</div>
+                    <div className="mb-4 p-4 bg-gray-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700">
+                      <div className="text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">{message.graph.title}</div>
+                      <div className="h-40 bg-white dark:bg-slate-900 rounded border border-gray-200 dark:border-slate-700 flex items-center justify-center">
+                        <div className="text-gray-400 dark:text-slate-500 text-sm">📊 {message.graph.type} Chart</div>
                       </div>
                     </div>
                   )}
@@ -595,19 +666,19 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                       {message.stocks.map((stock, stockIndex) => (
                         <div 
                           key={stockIndex}
-                          className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-all"
+                          className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm hover:shadow-md transition-all"
                         >
                           <div className="flex items-center justify-between">
                             <div 
                               className="flex-1 cursor-pointer"
                               onClick={() => onStockClick && onStockClick(stock.symbol)}
                             >
-                              <div className="font-semibold text-slate-900 text-base">{stock.symbol}</div>
-                              <div className="text-sm text-slate-600">{stock.name}</div>
+                              <div className="font-normal text-slate-900 dark:text-slate-100 text-base">{stock.symbol}</div>
+                              <div className="text-sm text-slate-600 dark:text-slate-400">{stock.name}</div>
                             </div>
                             <div className="flex items-center space-x-3">
                               <div className="text-right">
-                                <div className="font-semibold text-slate-900 text-base">${typeof stock.price === 'number' ? stock.price.toFixed(2) : stock.price}</div>
+                                <div className="font-normal text-slate-900 text-base">${typeof stock.price === 'number' ? stock.price.toFixed(2) : stock.price}</div>
                                 <div className={`text-sm font-medium ${(stock.change ?? 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                   {(stock.change ?? 0) >= 0 ? '+' : ''}{typeof stock.change === 'number' ? stock.change.toFixed(2) : stock.change}%
                                 </div>
@@ -626,7 +697,7 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                                   className={`p-2 rounded-lg transition-colors ${
                                     isInWatchlist(stock.symbol)
                                       ? 'bg-blue-100 text-blue-600 hover:bg-blue-200'
-                                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                      : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
                                   }`}
                                   title={isInWatchlist(stock.symbol) ? 'Remove from watchlist' : 'Add to watchlist'}
                                 >
@@ -647,18 +718,18 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                   
                   {/* News */}
                   {message.news && message.news.length > 0 && (
-                    <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                    <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg border border-green-200 dark:border-green-900/40">
                       <div className="flex items-center space-x-2 mb-3">
                         <BarChart3 className="w-5 h-5 text-green-600" />
-                        <span className="text-sm font-semibold text-green-900">Latest News</span>
+                        <span className="text-sm font-normal text-green-900">Latest News</span>
                       </div>
                       <div className="space-y-3">
                         {message.news.map((article, index) => (
-                          <div key={index} className="bg-white rounded-lg p-3 border border-green-100">
-                            <h4 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-2">
+                          <div key={index} className="bg-white dark:bg-slate-900 rounded-lg p-3 border border-green-100 dark:border-green-900/40">
+                            <h4 className="text-sm font-normal text-gray-900 dark:text-slate-100 mb-1 line-clamp-2">
                               {article.title}
                             </h4>
-                            <div className="flex items-center justify-between text-xs text-gray-500">
+                            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400">
                               <span>{article.source}</span>
                               <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
                             </div>
@@ -679,27 +750,27 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                   
                   {/* Analytics */}
                   {message.analytics && (
-                    <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                    <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200 dark:border-blue-900/40">
                       <div className="flex items-center space-x-2 mb-3">
-                        <Brain className="w-5 h-5 text-blue-600" />
-                        <span className="text-sm font-semibold text-blue-900">AI Analytics</span>
+                        <Lightbulb className="w-5 h-5 text-blue-600" />
+                        <span className="text-sm font-normal text-blue-900">AI Analytics</span>
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div className="text-center">
-                          <div className="text-xs text-gray-600 mb-1">Sentiment</div>
-                          <div className="text-lg font-bold text-blue-600">
+                          <div className="text-xs text-gray-600 dark:text-slate-400 mb-1">Sentiment</div>
+                          <div className="text-lg font-normal text-blue-600">
                             {Math.round((message.analytics.sentiment || 0.5) * 100)}%
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-xs text-gray-600 mb-1">Volatility</div>
-                          <div className="text-lg font-bold text-orange-600">
+                          <div className="text-xs text-gray-600 dark:text-slate-400 mb-1">Volatility</div>
+                          <div className="text-lg font-normal text-orange-600">
                             {Math.round((message.analytics.volatility || 0.15) * 100)}%
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-xs text-gray-600 mb-1">Trend</div>
-                          <div className={`text-lg font-bold ${
+                          <div className="text-xs text-gray-600 dark:text-slate-400 mb-1">Trend</div>
+                          <div className={`text-lg font-normal ${
                             message.analytics.trend === 'bullish' ? 'text-green-600' : 
                             message.analytics.trend === 'bearish' ? 'text-red-600' : 'text-gray-600'
                           }`}>
@@ -707,8 +778,8 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-xs text-gray-600 mb-1">Confidence</div>
-                          <div className="text-lg font-bold text-purple-600">
+                          <div className="text-xs text-gray-600 dark:text-slate-400 mb-1">Confidence</div>
+                          <div className="text-lg font-normal text-purple-600">
                             {Math.round((message.analytics.confidence || 0.5) * 100)}%
                           </div>
                         </div>
@@ -723,7 +794,7 @@ const AIChatPanel = ({ onStockClick, onHomeClick, marketMovers }) => {
                         <button
                           key={suggestionIndex}
                           onClick={() => handleSuggestionClick(suggestion)}
-                          className="block w-full text-left text-sm bg-white hover:bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 transition-colors"
+                          className="block w-full text-left text-sm bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg px-4 py-3 transition-colors"
                         >
                           {suggestion}
                         </button>

@@ -548,7 +548,7 @@ const HomePage = () => {
     fetchRealNews()
   }, [])
 
-  const generateAdaptiveSuggestions = (input) => {
+  const generateAdaptiveSuggestions = (input, filter = selectedFilter) => {
     const lowerInput = input.toLowerCase().trim()
     
     // Generate suggestions based on any letter input
@@ -602,7 +602,7 @@ const HomePage = () => {
     }
     
     // Get suggestions based on selected filter
-    const categorySuggestions = allSuggestions[selectedFilter] || allSuggestions.All
+    const categorySuggestions = allSuggestions[filter] || allSuggestions.All
     
     // If input is empty or very short, show category suggestions
     if (lowerInput.length < 2) {
@@ -685,10 +685,10 @@ const HomePage = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950">
       {/* Custom CSS for flowing ring animation */}
       <style>{`
-        @keyframes flowing-ring {
+        @keyframes flowing-gradient {
           0% {
             background-position: 0% 50%;
           }
@@ -700,26 +700,45 @@ const HomePage = () => {
           }
         }
         
-        @keyframes flowing-ring-inner {
-          0% {
-            background-position: 100% 50%;
-          }
-          50% {
-            background-position: 0% 50%;
-          }
-          100% {
-            background-position: 100% 50%;
-          }
+        .flowing-gradient {
+          background-size: 200% 200%;
+          animation: flowing-gradient 8s ease-in-out infinite;
         }
         
-        .flowing-ring {
-          background-size: 200% 200%;
-          animation: flowing-ring 3s ease-in-out infinite;
+        /* Moving and color-shifting glow */
+        @property --angle {
+          syntax: '<angle>';
+          inherits: false;
+          initial-value: 0deg;
         }
-        
-        .flowing-ring-inner {
-          background-size: 200% 200%;
-          animation: flowing-ring-inner 2s ease-in-out infinite;
+        @keyframes spin-angle {
+          to { --angle: 360deg; }
+        }
+        @keyframes hue-shift {
+          0% { filter: hue-rotate(0deg) blur(8px); }
+          100% { filter: hue-rotate(360deg) blur(8px); }
+        }
+
+        .rainbow-glow {
+          position: absolute;
+          inset: -3px; /* thinner glow spread */
+          border-radius: 2.2rem;
+          --angle: 0deg;
+          background: conic-gradient(
+            from var(--angle),
+            #ff3b30 0deg,
+            #ff9500 60deg,
+            #ffcc00 120deg,
+            #34c759 180deg,
+            #00c7ff 240deg,
+            #007aff 300deg,
+            #af52de 360deg
+          );
+          filter: blur(8px); /* thinner glow */
+          opacity: 0.6;
+          animation: hue-shift 12s linear infinite, spin-angle 10s linear infinite;
+          pointer-events: none;
+          z-index: 0;
         }
         
         .scrollbar-hide {
@@ -738,7 +757,7 @@ const HomePage = () => {
       <div className="flex h-screen flex-row-reverse">
         {/* Left Panel - Main Content */}
         <div className="flex-1 overflow-y-auto no-scrollbar">
-          <div className="max-w-5xl mx-auto p-6 pb-24 space-y-6">
+          <div className="max-w-5xl mx-auto p-6 pb-24 space-y-6 text-slate-900 dark:text-slate-100">
             {/* Data Source Status Indicator */}
             
             {selectedStock ? (
@@ -748,15 +767,15 @@ const HomePage = () => {
             ) : (
               <>
             {/* Region Filters (Pills) */}
-            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 -mt-1">
+              <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 -mt-1">
               {[...regionTabs, ...customRegions.map(cr => cr.name)].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setSelectedRegion(tab)}
-                  className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all duration-200 whitespace-nowrap h-8 ${
+                    className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all duration-200 whitespace-nowrap h-8 ${
                     tab === selectedRegion
-                      ? 'bg-gray-100 text-green-700 border-gray-300'
-                      : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                      ? 'bg-gray-100 dark:bg-slate-800 text-green-700 dark:text-green-300 border-gray-300 dark:border-slate-700'
+                      : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
                   }`}
                   aria-pressed={tab === selectedRegion}
                 >
@@ -766,7 +785,7 @@ const HomePage = () => {
               {/* Plus button to add new regions */}
               <button
                 onClick={() => setShowAddRegionModal(true)}
-                className="px-3 py-1.5 text-sm font-medium rounded-full border border-dashed border-slate-300 text-slate-500 hover:border-slate-400 hover:text-slate-600 transition-all duration-200 h-8 flex items-center gap-1"
+                className="px-3 py-1.5 text-sm font-medium rounded-full border border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-600 hover:text-slate-600 dark:hover:text-slate-200 transition-all duration-200 h-8 flex items-center gap-1"
                 title="Add custom region or individual stocks"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -778,7 +797,7 @@ const HomePage = () => {
 
             {/* Watchlist display (visible only when Watchlist selected) */}
             {selectedRegion === 'Watchlist' && (
-              <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="text-sm text-gray-600">
                     Use the + button above to add stocks to your watchlist
@@ -798,20 +817,20 @@ const HomePage = () => {
             {/* Market Indexes */}
             <div className="relative">
               {/* Fade overlay for scroll indication */}
-              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent dark:from-slate-950 dark:via-slate-950/80 to-transparent z-10 pointer-events-none"></div>
               
               <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 scrollbar-hide" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
                 {getIndicesForRegion(selectedRegion).map((index) => (
                 <div 
                   key={index.name} 
-                  className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition-all duration-200 cursor-pointer flex-shrink-0 w-48 min-w-[12rem]"
+                  className="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-md transition-all duration-200 cursor-pointer flex-shrink-0 w-48 min-w-[12rem]"
                   onClick={() => handleStockClick(index.name.replace(/\s+/g, '').toUpperCase())}
                 >
                   {/* Title and value */}
-                  <div className="text-sm font-semibold text-slate-900 mb-1 leading-snug">{index.name}</div>
-                  <div className="text-[13px] text-slate-600 leading-tight">
-                    <div className="font-semibold text-slate-800">{index.value}</div>
-                    <div className="text-slate-500">({index.change})</div>
+                  <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-1 leading-snug">{index.name}</div>
+                  <div className="text-[13px] text-slate-600 dark:text-slate-400 leading-tight">
+                    <div className="font-semibold text-slate-800 dark:text-slate-200">{index.value}</div>
+                    <div className="text-slate-500 dark:text-slate-500">({index.change})</div>
                   </div>
 
                   {/* Percent change prominent */}
@@ -854,7 +873,7 @@ const HomePage = () => {
             </div>
             
             {/* News Stories Grid */}
-            <div className="mb-3">
+              <div className="mb-3">
               <h3 className="text-sm font-semibold text-slate-700 mb-3">Latest Updates</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -875,7 +894,7 @@ const HomePage = () => {
                   <div 
                     key={index} 
                     onClick={() => handleNewsClick(story)}
-                    className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer"
+                    className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer"
                   >
                     <div className="relative h-48 overflow-hidden">
                       <img 
@@ -886,7 +905,7 @@ const HomePage = () => {
                           e.target.src = '/placeholder-news.jpg'
                         }}
                       />
-                      <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-slate-800">
+                      <div className="absolute top-3 left-3 bg-white/90 dark:bg-slate-900/80 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-slate-800 dark:text-slate-100">
                         {story.source || 'News'}
                       </div>
                       {story.sentiment && (
@@ -900,10 +919,10 @@ const HomePage = () => {
                       )}
                     </div>
                     <div className="p-4">
-                      <h3 className="text-sm font-semibold text-slate-900 leading-tight mb-2 line-clamp-3">
+                      <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight mb-2 line-clamp-3">
                         {story.title}
                       </h3>
-                      <div className="flex items-center justify-between text-xs text-slate-500">
+                      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                         <span>{new Date(story.publishedAt).toLocaleDateString()}</span>
                         {story.author && <span>· {story.author}</span>}
                       </div>
@@ -962,7 +981,7 @@ const HomePage = () => {
                   logo: 'WaPo'
                 }
               ].map((story, index) => (
-                <div key={index} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-all duration-200">
+                <div key={index} className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-md transition-all duration-200">
                   {/* Image */}
                   <div className="relative h-48 overflow-hidden bg-gray-100">
                     <img 
@@ -974,17 +993,17 @@ const HomePage = () => {
                       }}
                     />
                     {/* Source logo overlay */}
-                    <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-slate-800">
+                    <div className="absolute top-3 left-3 bg-white/90 dark:bg-slate-900/80 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-slate-800 dark:text-slate-100">
                       {story.logo}
                     </div>
                   </div>
                   
                   {/* Content */}
-                  <div className="p-4">
-                    <h3 className="text-sm font-semibold text-slate-900 leading-tight mb-2 line-clamp-3">
+                    <div className="p-4">
+                      <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight mb-2 line-clamp-3">
                       {story.headline}
                     </h3>
-                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                       <span>{story.time}</span>
                       {story.author && <span>· {story.author}</span>}
                     </div>
@@ -999,7 +1018,7 @@ const HomePage = () => {
               <button 
                 onClick={loadMoreNews}
                 disabled={isLoadingNews}
-                className="inline-flex items-center space-x-2 px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center space-x-2 px-6 py-2 text-sm font-medium text-gray-700 dark:text-slate-200 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-full transition-colors border border-gray-200 dark:border-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span>{isLoadingNews ? 'Loading...' : 'View More'}</span>
                 {!isLoadingNews && (
@@ -1023,7 +1042,7 @@ const HomePage = () => {
         </div>
 
         {/* Right Panel - Chat */}
-        <div className="w-1/3 min-w-[20rem] max-w-[35rem] bg-white border-l border-gray-200 flex flex-col">
+        <div className="w-1/3 min-w-[20rem] max-w-[35rem] flex flex-col m-2">
           <div className="flex-1 overflow-hidden no-scrollbar">
             <AIChatPanel 
               onStockClick={handleStockClick} 
@@ -1037,16 +1056,15 @@ const HomePage = () => {
       {/* Bottom Search Bar acts as Chat Input */}
       <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50" ref={searchRef}>
         <div className="relative">
-          {/* Flowing Ring Animation - As chatbox border */}
-          <div className="absolute -inset-1 rounded-[2.2rem] bg-gradient-to-r from-blue-500 via-green-500 via-purple-500 to-blue-500 flowing-ring">
-            <div className="absolute inset-0.5 rounded-[2rem] bg-white"></div>
-          </div>
-          <div className="relative rounded-[2rem] w-[36rem] max-w-[90vw] bg-white overflow-hidden transition-all">
+          {/* Search Bar Container with Glowing Rainbow Ring */}
+          <div className="relative rounded-[2rem] w-[36rem] max-w-[90vw]">
+            <div className="rainbow-glow"></div>
+            <div className="relative z-10 rounded-[2rem] bg-white dark:bg-slate-900 overflow-hidden border border-gray-200 dark:border-slate-800">
           {/* Suggestions content (visible when open) */}
           {isSearchOpen && (
-            <div>
+            <div className="relative z-10">
               <div className="px-5 pt-4 pb-3">
-                <div className="text-sm font-semibold text-gray-700">Trending questions</div>
+                <div className="text-sm font-semibold text-gray-700 dark:text-slate-200">Trending questions</div>
                 <div className="mt-3 space-y-2">
                   {(dynamicSuggestions.length > 0 ? dynamicSuggestions : [
                     "What's going on with the markets today?",
@@ -1072,7 +1090,7 @@ const HomePage = () => {
                         }
                         setIsSearchOpen(false)
                       }}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-800"
+                      className="w-full text-left px-3 py-2 hover:bg-white/20 dark:hover:bg-white/10 text-gray-700 dark:text-slate-200 bg-transparent border-0 outline-none"
                     >
                       {q}
                     </button>
@@ -1087,13 +1105,13 @@ const HomePage = () => {
                       onClick={() => {
                         setSelectedFilter(c)
                         // Regenerate suggestions with new filter
-                        const suggestions = generateAdaptiveSuggestions(searchText)
+                        const suggestions = generateAdaptiveSuggestions(searchText, c)
                         setDynamicSuggestions(suggestions)
                       }}
                       className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all duration-200 whitespace-nowrap h-8 ${
                         c === selectedFilter
-                          ? 'bg-gray-100 text-green-700 border-gray-300'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                          ? 'bg-white/80 text-gray-700 border-gray-300'
+                          : 'bg-white/50 text-gray-700 border-gray-200 hover:bg-white/70 hover:border-gray-300'
                       }`}
                     >
                       {c}
@@ -1101,13 +1119,13 @@ const HomePage = () => {
                   ))}
         </div>
           </div>
-              <div className="border-t border-gray-200" />
+              <div className="border-t border-gray-300 dark:border-slate-700" />
         </div>
           )}
           {/* Input row (always visible, same width) */}
-          <div className="px-4 py-2">
+          <div className="px-4 py-2 relative z-10">
           <div className="flex items-center space-x-2">
-            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -1123,7 +1141,7 @@ const HomePage = () => {
               onFocus={() => setIsSearchOpen(true)}
               type="text"
               placeholder="Search for stocks, advices and more"
-              className="flex-1 text-sm px-2 py-2 outline-none focus:outline-none focus:ring-0 text-gray-700 placeholder-gray-400"
+              className="flex-1 text-sm px-2 py-2 outline-none focus:outline-none focus:ring-0 text-gray-700 dark:text-slate-200 placeholder-gray-500 dark:placeholder-slate-400 bg-transparent"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   const text = searchText
@@ -1136,6 +1154,7 @@ const HomePage = () => {
               }}
             />
             </div>
+          </div>
             </div>
           </div>
         </div>

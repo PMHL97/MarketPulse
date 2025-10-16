@@ -1,10 +1,32 @@
 # Market Pulse
 
-A modern trading platform with integrated real-time market sentiment analysis, user authentication, and advanced charting capabilities.
+A comprehensive trading platform with **3 frontend variants** and microservices backend, featuring real-time market data, AI-powered analysis, and advanced trading tools.
 
-## Features
+## 🚀 Frontend Variants
+
+### 1. **Main Frontend** (`/src/`) - Port 3001
+- **Full-featured trading platform** with complete functionality
+- 30+ pages including Markets, Charts, Community, Screeners
+- Advanced charting with Lightweight Charts
+- Complete user authentication and watchlist management
+
+### 2. **AI Frontend** (`/src-ai/`) - Port 3002  
+- **AI-powered trading interface** with intelligent features
+- AI Chat Panel for natural language queries
+- AI Market Brief with sentiment analysis
+- AI Portfolio Dashboard with goal tracking
+- Smart notifications and recommendations
+
+### 3. **Classic Frontend** (`/src-classic/`) - Port 3001
+- **Simplified interface** for traditional users
+- Clean, minimal design without AI features
+- Focus on core trading functionality
+- Lightweight and fast loading
+
+## ✨ Key Features
 
 - **Real-time Market Data** - Live stock prices and market overview
+- **AI-Powered Analysis** - Intelligent market insights and recommendations  
 - **Advanced Charting** - Professional trading charts with multiple timeframes
 - **Sentiment Analysis** - AI-powered news sentiment analysis for stocks
 - **User Authentication** - Secure JWT-based login/registration
@@ -51,11 +73,20 @@ docker-compose up -d
 # Install dependencies
 npm install
 
-# Start development server
+# Start Main Frontend (Port 3001)
 npm run dev
+
+# Start AI Frontend (Port 3002) 
+npm run dev:ai
+
+# Start Classic Frontend (Port 3001)
+npm run dev:classic
 ```
 
-The app will be available at `http://localhost:3001`
+**Access Points:**
+- Main Frontend: `http://localhost:3001`
+- AI Frontend: `http://localhost:3002`  
+- Classic Frontend: `http://localhost:3001` (different build)
 
 ### 3. Access Backend Services
 - User Service: `http://localhost:8080`

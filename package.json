@@ -6,10 +6,13 @@
   "scripts": {
     "dev": "vite",
     "dev:ai": "vite --config vite.config.ai.js",
+    "dev:classic": "vite --config vite.config.classic.js",
     "build": "vite build",
     "build:ai": "vite build --config vite.config.ai.js",
+    "build:classic": "vite build --config vite.config.classic.js",
     "preview": "vite preview",
     "preview:ai": "vite preview --config vite.config.ai.js",
+    "preview:classic": "vite preview --config vite.config.classic.js",
     "start": "node server.js",
     "backend:up": "docker-compose up -d",
     "backend:down": "docker-compose down",

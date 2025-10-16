@@ -50,7 +50,7 @@ const Recommendations = ({ onStockClick }) => {
     <div className="mb-4">
       {/* Description */}
       <div className="mb-3">
-        <p className="text-sm text-secondary-700">Curated ideas with suggested actions. Tap a card to open details.</p>
+        <p className="text-sm text-secondary-700 dark:text-slate-400">Curated ideas with suggested actions. Tap a card to open details.</p>
       </div>
       <div className="grid grid-cols-1 gap-3">
         {picks.map((stock, idx) => {
@@ -58,23 +58,23 @@ const Recommendations = ({ onStockClick }) => {
           return (
             <div
               key={idx}
-              className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition-all"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition-all"
               onClick={() => onStockClick && onStockClick(stock.symbol)}
             >
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <div className="font-semibold text-slate-900 text-base">{stock.symbol}</div>
-                    <span className={`inline-flex items-center px-2 py-0.5 text-[11px] font-semibold rounded-full border ${styles.badge}`}>
+                    <div className="font-normal text-slate-900 dark:text-slate-100 text-base">{stock.symbol}</div>
+                    <span className={`inline-flex items-center px-2 py-0.5 text-[11px] font-normal rounded-full border ${styles.badge}`}>
                       {stock.action}
                     </span>
                   </div>
-                  <div className="text-sm text-slate-600">{stock.name}</div>
-                  <div className="text-xs text-slate-500 mt-1">{stock.note}</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400">{stock.name}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">{stock.note}</div>
                 </div>
                 <div className="text-right">
-                  <div className="font-semibold text-slate-900 text-base">${stock.price.toFixed(2)}</div>
-                  <div className={`text-sm font-medium ${(stock.change ?? 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <div className="font-normal text-slate-900 dark:text-slate-100 text-base">${stock.price.toFixed(2)}</div>
+                  <div className={`text-sm font-normal ${(stock.change ?? 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {(stock.change ?? 0) >= 0 ? '+' : ''}{Math.abs(stock.change ?? 0).toFixed(2)}%
                   </div>
                 </div>

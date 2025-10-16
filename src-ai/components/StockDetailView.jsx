@@ -65,12 +65,12 @@ const StockDetailView = ({ symbol, onClose }) => {
 
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-slate-900">{getDisplayName(symbol)} Stock Details</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{getDisplayName(symbol)} Stock Details</h2>
         <button
           onClick={onClose}
-          className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+          className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -78,18 +78,18 @@ const StockDetailView = ({ symbol, onClose }) => {
       
       {isLoading ? (
         <div className="flex items-center justify-center py-8">
-          <RefreshCw className="w-6 h-6 text-gray-400 animate-spin" />
-          <span className="ml-2 text-gray-600">Loading real-time data...</span>
+          <RefreshCw className="w-6 h-6 text-gray-400 dark:text-slate-500 animate-spin" />
+          <span className="ml-2 text-gray-600 dark:text-slate-400">Loading real-time data...</span>
         </div>
       ) : stockData ? (
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium text-slate-600">Current Price</label>
-              <p className="text-2xl font-bold text-slate-900">${stockData.price?.toFixed(2) || 'N/A'}</p>
+              <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Current Price</label>
+              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">${stockData.price?.toFixed(2) || 'N/A'}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-600">Change</label>
+              <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Change</label>
               <p className={`text-lg font-semibold ${getChangeColor(stockData.changePercent)}`}>
                 {stockData.changePercent >= 0 ? '+' : ''}{stockData.changePercent?.toFixed(2) || '0.00'}%
               </p>
@@ -98,33 +98,33 @@ const StockDetailView = ({ symbol, onClose }) => {
           
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="text-sm font-medium text-slate-600">Volume</label>
-              <p className="text-lg font-semibold text-slate-900">{formatNumber(stockData.volume)}</p>
+              <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Volume</label>
+              <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">{formatNumber(stockData.volume)}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-600">High</label>
-              <p className="text-lg font-semibold text-slate-900">${stockData.high?.toFixed(2) || 'N/A'}</p>
+              <label className="text-sm font-medium text-slate-600 dark:text-slate-400">High</label>
+              <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">${stockData.high?.toFixed(2) || 'N/A'}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-600">Low</label>
-              <p className="text-lg font-semibold text-slate-900">${stockData.low?.toFixed(2) || 'N/A'}</p>
+              <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Low</label>
+              <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">${stockData.low?.toFixed(2) || 'N/A'}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium text-slate-600">Open</label>
-              <p className="text-lg font-semibold text-slate-900">${stockData.open?.toFixed(2) || 'N/A'}</p>
+              <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Open</label>
+              <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">${stockData.open?.toFixed(2) || 'N/A'}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-600">Previous Close</label>
-              <p className="text-lg font-semibold text-slate-900">${stockData.previousClose?.toFixed(2) || 'N/A'}</p>
+              <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Previous Close</label>
+              <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">${stockData.previousClose?.toFixed(2) || 'N/A'}</p>
             </div>
           </div>
           
-          <div className="pt-4 border-t border-slate-200">
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">AI Analysis</h3>
-            <p className="text-slate-600">
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">AI Analysis</h3>
+            <p className="text-slate-600 dark:text-slate-400">
               Based on current market conditions and technical indicators, {symbol} shows strong momentum 
               with positive sentiment from institutional investors. The stock is trading above its 50-day 
               moving average, indicating bullish trend continuation.
@@ -135,8 +135,8 @@ const StockDetailView = ({ symbol, onClose }) => {
         <div className="flex items-center justify-center py-8">
           <div className="text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Unable to Load Data</h3>
-            <p className="text-gray-600">Failed to fetch stock data for {symbol}</p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-2">Unable to Load Data</h3>
+            <p className="text-gray-600 dark:text-slate-400">Failed to fetch stock data for {symbol}</p>
           </div>
         </div>
       )}

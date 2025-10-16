@@ -11,26 +11,26 @@ const NewsDetailView = ({ article, onClose }) => {
   }
 
   return (
-    <div className="h-full bg-white border-l border-gray-200 flex flex-col">
+    <div className="h-full bg-white dark:bg-slate-900 border-l border-gray-200 dark:border-slate-800 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/60">
         <div className="flex items-center space-x-3">
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-600" />
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-slate-400" />
           </button>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">News Article</h2>
-            <p className="text-sm text-gray-600">{article.source}</p>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">News Article</h2>
+            <p className="text-sm text-gray-600 dark:text-slate-400">{article.source}</p>
           </div>
         </div>
         <button
           onClick={onClose}
-          className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-200 dark:hover:bg-slate-800 rounded-lg transition-colors"
         >
-          <X className="w-5 h-5 text-gray-600" />
+          <X className="w-5 h-5 text-gray-600 dark:text-slate-400" />
         </button>
       </div>
 
@@ -57,11 +57,11 @@ const NewsDetailView = ({ article, onClose }) => {
 
       {/* Article Content */}
       <div className="flex-1 overflow-y-auto p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-4 leading-tight">
           {article.title}
         </h1>
         
-        <div className="flex items-center space-x-6 text-sm text-gray-500 mb-6">
+        <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-slate-400 mb-6">
           <div className="flex items-center space-x-2">
             <Calendar className="w-4 h-4" />
             <span>{new Date(article.publishedAt).toLocaleDateString('en-US', {
@@ -82,7 +82,7 @@ const NewsDetailView = ({ article, onClose }) => {
 
         {article.description && (
           <div className="prose max-w-none mb-6">
-            <p className="text-gray-700 leading-relaxed text-base">
+            <p className="text-gray-700 dark:text-slate-300 leading-relaxed text-base">
               {article.description}
             </p>
           </div>
@@ -91,9 +91,9 @@ const NewsDetailView = ({ article, onClose }) => {
         {/* Full Article Content */}
         {article.content && (
           <div className="prose max-w-none mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Full Article</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">Full Article</h3>
             <div 
-              className="text-gray-700 leading-relaxed"
+              className="text-gray-700 dark:text-slate-300 leading-relaxed"
               dangerouslySetInnerHTML={{ 
                 __html: article.content.replace(/\[.*?\]/g, '').replace(/<[^>]*>/g, '') 
               }}
@@ -104,14 +104,14 @@ const NewsDetailView = ({ article, onClose }) => {
         {/* Fallback content if no full content available */}
         {!article.content && (
           <div className="prose max-w-none mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Article Summary</h3>
-            <div className="text-gray-700 leading-relaxed space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">Article Summary</h3>
+            <div className="text-gray-700 dark:text-slate-300 leading-relaxed space-y-4">
               <p className="text-lg">
                 {article.description || article.title}
               </p>
               
-              <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
-                <p className="text-blue-800">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-900/40 p-4 rounded">
+                <p className="text-blue-800 dark:text-blue-300">
                   <strong>Note:</strong> This is a summary of the article. For the complete story, please click "Read Full Article" below to visit the original source.
                 </p>
               </div>
@@ -135,7 +135,7 @@ const NewsDetailView = ({ article, onClose }) => {
 
         {/* Article Tags */}
         <div className="flex items-center space-x-4 mb-6">
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
+          <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-slate-400">
             <Tag className="w-4 h-4" />
             <span>Financial News</span>
           </div>
@@ -143,7 +143,7 @@ const NewsDetailView = ({ article, onClose }) => {
             <div className={`px-3 py-1 rounded-full text-sm font-medium ${
               article.sentiment === 'positive' ? 'bg-green-100 text-green-700' :
               article.sentiment === 'negative' ? 'bg-red-100 text-red-700' :
-              'bg-gray-100 text-gray-700'
+              'bg-gray-100 text-gray-700 dark:bg-slate-800 dark:text-slate-300'
             }`}>
               {article.sentiment} sentiment
             </div>
@@ -152,7 +152,7 @@ const NewsDetailView = ({ article, onClose }) => {
       </div>
 
       {/* Footer Actions */}
-      <div className="p-4 border-t border-gray-200 bg-gray-50">
+      <div className="p-4 border-t border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/60">
         {article.url && article.url !== '#' && (
           <button
             onClick={handleExternalLink}
