@@ -785,7 +785,7 @@ const HomePage = () => {
               {/* Plus button to add new regions */}
               <button
                 onClick={() => setShowAddRegionModal(true)}
-                className="px-3 py-1.5 text-sm font-medium rounded-full border border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-600 hover:text-slate-600 dark:hover:text-slate-200 transition-all duration-200 h-8 flex items-center gap-1"
+                className="px-3 py-1.5 text-sm font-medium rounded-full border border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-300 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600 hover:text-slate-600 dark:hover:text-slate-200 transition-all duration-200 h-8 flex items-center gap-1"
                 title="Add custom region or individual stocks"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
