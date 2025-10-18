@@ -508,13 +508,23 @@ const Header = () => {
             <div className="hidden md:flex items-center text-sm">
               <div className="flex items-center rounded-full border border-gray-300 bg-gray-100 overflow-hidden">
                 <button
-                  onClick={() => { window.location.href = 'http://localhost:3001/' }}
+                  onClick={() => {
+                    const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+                    const classicUrl = isLocal ? (import.meta.env.VITE_CLASSIC_APP_URL || 'http://localhost:3001') : import.meta.env.VITE_CLASSIC_APP_URL
+                    if (!classicUrl) throw new Error('VITE_CLASSIC_APP_URL must be set in production build')
+                    window.location.href = classicUrl.endsWith('/') ? classicUrl : `${classicUrl}/`
+                  }}
                   className="px-3 py-1.5 text-green-700 bg-gray-100 hover:bg-gray-200 border-r border-gray-300 h-8"
                 >
                   Classic
                 </button>
                 <button
-                  onClick={() => { window.location.href = 'http://localhost:3002/' }}
+                  onClick={() => {
+                    const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+                    const aiUrl = isLocal ? (import.meta.env.VITE_AI_APP_URL || 'http://localhost:3002') : import.meta.env.VITE_AI_APP_URL
+                    if (!aiUrl) throw new Error('VITE_AI_APP_URL must be set in production build')
+                    window.location.href = aiUrl.endsWith('/') ? aiUrl : `${aiUrl}/`
+                  }}
                   className="px-3 py-1.5 text-gray-800 bg-white hover:bg-gray-50 h-8"
                 >
                   AI

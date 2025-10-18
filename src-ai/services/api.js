@@ -1,12 +1,26 @@
 import axios from 'axios';
 
-// API base URLs - Environment-aware configuration
-const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-const baseUrl = isProduction ? 'http://3.144.189.176' : 'http://localhost';
+// Environment-aware, no host-relative defaults in production
+const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const requireEnvInProd = (key) => {
+  const value = import.meta.env[key];
+  if (!isLocal && !value) {
+    throw new Error(`${key} must be set in production build`);
+  }
+  return value;
+};
 
-const USER_SERVICE_URL = isProduction ? `${baseUrl}:8080` : `${baseUrl}:8082`;
-const ARTICLE_SERVICE_URL = isProduction ? `${baseUrl}:8081` : `${baseUrl}:8083`;
-const ANALYSIS_SERVICE_URL = isProduction ? `${baseUrl}:5001` : `${baseUrl}:5002`;
+const USER_SERVICE_URL = isLocal
+  ? (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8082')
+  : requireEnvInProd('VITE_API_BASE_URL');
+
+const ARTICLE_SERVICE_URL = isLocal
+  ? (import.meta.env.VITE_ARTICLE_API_URL || 'http://localhost:8083')
+  : requireEnvInProd('VITE_ARTICLE_API_URL');
+
+const ANALYSIS_SERVICE_URL = isLocal
+  ? (import.meta.env.VITE_ANALYSIS_API_URL || 'http://localhost:5002')
+  : requireEnvInProd('VITE_ANALYSIS_API_URL');
 
 // Create axios instances for each service
 const userApi = axios.create({

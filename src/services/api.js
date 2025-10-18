@@ -1,12 +1,26 @@
 import axios from 'axios';
 
-// API base URLs - Environment-aware configuration
-const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-const baseUrl = isProduction ? 'http://3.144.189.176' : 'http://localhost';
+// Environment-aware, no host-relative defaults in production
+const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const requireEnvInProd = (key) => {
+  const value = import.meta.env[key];
+  if (!isLocal && !value) {
+    throw new Error(`${key} must be set in production build`);
+  }
+  return value;
+};
 
-const USER_SERVICE_URL = isProduction ? `${baseUrl}:8080` : `${baseUrl}:8082`;
-const ARTICLE_SERVICE_URL = isProduction ? `${baseUrl}:8081` : `${baseUrl}:8083`;
-const ANALYSIS_SERVICE_URL = isProduction ? `${baseUrl}:5001` : `${baseUrl}:5002`;
+const USER_SERVICE_URL = isLocal
+  ? (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8082')
+  : requireEnvInProd('VITE_API_BASE_URL');
+
+const ARTICLE_SERVICE_URL = isLocal
+  ? (import.meta.env.VITE_ARTICLE_API_URL || 'http://localhost:8083')
+  : requireEnvInProd('VITE_ARTICLE_API_URL');
+
+const ANALYSIS_SERVICE_URL = isLocal
+  ? (import.meta.env.VITE_ANALYSIS_API_URL || 'http://localhost:5002')
+  : requireEnvInProd('VITE_ANALYSIS_API_URL');
 
 // Create axios instances for each service
 const userApi = axios.create({
@@ -120,43 +134,35 @@ export const marketDataService = {
   // Get market overview with real indices data
   getMarketOverview: async () => {
     try {
-      const API_KEY = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ALPHA_VANTAGE_API_KEY) || 'demo';
-      const indices = ['SPY', 'QQQ', 'DIA']; // ETFs that track major indices
-      const promises = indices.map(async (symbol) => {
-        const response = await fetch(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`
-        );
-        const data = await response.json();
-        return { symbol, data };
-      });
+      const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+      const base = isLocal
+        ? (import.meta.env.VITE_STOCK_DATA_API_URL || 'http://localhost:5003')
+        : import.meta.env.VITE_STOCK_DATA_API_URL;
+      if (!base) throw new Error('VITE_STOCK_DATA_API_URL must be set in production build');
 
-      const results = await Promise.all(promises);
-      const overview = {};
+      const response = await fetch(`${base}/api/indices`);
+      if (!response.ok) throw new Error(`Indices API failed: ${response.status}`);
+      const payload = await response.json();
+      const us = payload && payload.data && payload.data.US;
+      if (!us || !Array.isArray(us)) return getMockMarketOverview();
 
-      results.forEach(({ symbol, data }) => {
-        if (data['Global Quote']) {
-          const quote = data['Global Quote'];
-          const change = parseFloat(quote['09. change']);
-          const changePercent = parseFloat(quote['10. change percent'].replace('%', ''));
-          
-          if (symbol === 'SPY') {
-            overview.sp500 = { change, changePercent };
-          } else if (symbol === 'QQQ') {
-            overview.nasdaq = { change, changePercent };
-          } else if (symbol === 'DIA') {
-            overview.dow = { change, changePercent };
-          }
-        }
-      });
+      const byName = Object.fromEntries(us.map(i => [i.name, i]));
+      const parseNum = (s) => {
+        if (typeof s !== 'string') return 0;
+        return parseFloat(s.replace(/[%+,]/g, '')) || 0;
+      };
 
-      // Fallback to mock data if any API calls fail
-      if (Object.keys(overview).length === 0) {
-        return getMockMarketOverview();
-      }
+      const sp500 = byName['S&P 500'];
+      const nasdaq = byName['NASDAQ'];
+      const dow = byName['DOW'];
 
-      return overview;
+      return {
+        sp500: sp500 ? { change: parseNum(sp500.change), changePercent: parseNum(sp500.percent) } : undefined,
+        nasdaq: nasdaq ? { change: parseNum(nasdaq.change), changePercent: parseNum(nasdaq.percent) } : undefined,
+        dow: dow ? { change: parseNum(dow.change), changePercent: parseNum(dow.percent) } : undefined,
+      };
     } catch (error) {
-      console.error('Error fetching market overview:', error);
+      console.error('Error fetching market overview (backend indices):', error);
       return getMockMarketOverview();
     }
   },

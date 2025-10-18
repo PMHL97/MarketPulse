@@ -5,7 +5,12 @@ class RealStockDataService {
   constructor() {
     this.cache = new Map();
     this.cacheTimeout = 30000; // 30 seconds cache
-    this.backendUrl = 'http://localhost:5003'; // Backend proxy service
+    const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    const envUrl = import.meta.env.VITE_STOCK_DATA_API_URL;
+    if (!isLocal && !envUrl) {
+      throw new Error('VITE_STOCK_DATA_API_URL must be set in production build');
+    }
+    this.backendUrl = isLocal ? (envUrl || 'http://localhost:5003') : envUrl; // Backend proxy service
   }
 
   // Get real stock data from backend proxy
